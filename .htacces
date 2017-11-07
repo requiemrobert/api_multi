@@ -1,0 +1,18 @@
+
+# Se establece la ruta como el archivo principal o pagina principal
+DirectoryIndex index.php
+
+RewriteEngine On
+
+# Para metodo GET, POST, PUT
+RewriteRule ^conexion_global_system/([a-zA-Z]+)$ index.php
+RewriteRule ^conexion_global_system/([a-zA-Z]+)/$ index.php
+
+# Para metodo GET por Id y metodo DELETE
+RewriteRule ^conexion_global_system/([a-zA-Z]+)/([0-9]+)$ index.php
+RewriteRule ^conexion_global_system/([a-zA-Z]+)/([0-9]+)/$ index.php
+
+# Expresiones regulares
+## Alfanumericos | ([a-zA-Z0-9]+)
+## Numericos     | ([0-9]+)
+## Caracteres    | ([a-zA-Z]+)
