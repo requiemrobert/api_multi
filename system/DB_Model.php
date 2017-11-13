@@ -26,12 +26,14 @@
 
   public function get_login($dataArray = array()){
 
-    $array_field = $this->get_fields_query(["status", "user_name", "email"]);
+    $array_field = $this->get_fields_query(["usuario", "email", "status" ]);
     
-    $sql = "SELECT $array_field FROM usuario WHERE user_name = ? AND password = ?";
+    extract($dataArray);
 
-    $response_query = $this->execute_query_login($dataArray, $sql);
-      
+    $sql = "SELECT $array_field FROM usuario WHERE usuario = '$usuario' AND password = '$password'";
+   
+    $response_query = $this->get_query($sql);
+
       if ($response_query) {
           return $this->response_json(200, $response_query, "consulta exitosa");
       }else{
@@ -41,74 +43,33 @@
   }  
 
   public function get_menu($dataArray = array()){
-
-    $array_field = $this->get_fields_query(["modulo.descripcion"]);
     
     extract($dataArray);
 
-    $sql = '';
-
-    $sql .= " SELECT DISTINCT ";  
-    $sql .= " modulo_padre.descripcion AS padre_descripcion,";
-    $sql .= " modulo_hijo.descripcion AS hijo_descripcion";
-    $sql .= " FROM modulo AS modulo_padre";
-    $sql .= " INNER JOIN modulo AS modulo_hijo ON modulo_padre.id_modulo = modulo_hijo.id_modulo_fk,";
-    $sql .= " usuario";
-    $sql .= " INNER JOIN perfil ON usuario.id_perfil_fk = perfil.id_perfil"; 
-    $sql .= " INNER JOIN autorizacion ON autorizacion.id_perfil_fk = perfil.id_perfil";
-    $sql .= " INNER JOIN modulo ON autorizacion.id_modulo_fk = modulo.id_modulo"; 
-    $sql .= " WHERE usuario.`user_name` = '$user_name' AND autorizacion.acceso = $status";
-    $sql .= " order by  padre_descripcion";
+    $sql  = " SELECT DISTINCT ";  
+    $sql .= " modulo.id_modulo,";
+    $sql .= " modulo.descripcion";
+    $sql .= " FROM modulo ";
+    $sql .= " INNER JOIN autorizacion ON autorizacion.id_modulo_fk = modulo.id_modulo";
+    $sql .= " INNER JOIN perfil ON autorizacion.id_perfil_fk = perfil.id_perfil"; 
+    $sql .= " INNER JOIN usuario ON usuario.id_perfil_fk = perfil.id_perfil";
+    $sql .= " WHERE usuario.`usuario` = '$usuario' AND autorizacion.acceso = $status";
+    $sql .= " AND modulo.activo = 1";
 
     $response_query = $this->get_query($sql); 
 
     $array_opciones = [];
 
-    foreach ($response_query as $key => $value) {
-            
-          $array_opciones[$key] = [ $value['padre_descripcion'] => $value['hijo_descripcion'] ] ;
-
-    }
-
-    $opciones_padres = [];
-
-    $opciones_hijos = [];
-
-    $opcion_padre='';
-    $opcion_padre_aux='';
-
-    $padre_hijo =[];
-
-    foreach ($array_opciones as $key => $value) {
-
-        if($opcion_padre == array_keys($value)[0] or empty($opcion_padre)){
-
-          array_push($opciones_hijos, array_values($value)[0]);
-
-        }else{
-
-          $opciones_padres[array_keys($value)[0]] = $opciones_hijos;
-
-          $padre_hijo[$opcion_padre] = $opciones_padres[array_keys($value)[0]];
-
-          $opciones_hijos = [];
-
-          array_push($opciones_hijos, array_values($value)[0]);
-
-          $opcion_padre_aux = array_keys($value)[0];
+    foreach ($response_query as $value) {
           
-        }
-
-        $opcion_padre = array_keys($value)[0];
-    } 
-
-    $opciones_padres[array_keys($value)[0]] = $opciones_hijos;
-    $padre_hijo[$opcion_padre_aux] = $opciones_padres[array_keys($value)[0]];
-
+      array_push($array_opciones, $value);
+         
+    }
+  
       if ($response_query) {
-          return $this->response_json(200, $padre_hijo, "consulta exitosa");
+          return $this->response_json(200, (array)$array_opciones, "consulta exitosa");
       }else{
-          return $this->response_json(-200, $padre_hijo, "no se pudo realizar la consulta");
+          return $this->response_json(-200, NULL, "no se pudo realizar la consulta");
       }
 
   }
@@ -139,6 +100,20 @@
 
   }
 
+  public function registro_pieza(array $dataArray){
+
+    
+    $sql = 'INSERT INTO pieza ('. $this->fields_query($dataArray) .') VALUES ('. $this->values_query($dataArray) .')';
+
+    $response_query = $this->set_query($sql);
+
+      if ($response_query) {
+          return $this->response_json(200, $response_query, "registro exitoso");
+      }else{
+          return $this->response_json(-200, $response_query, "no se pudo realizar el registro");
+      }
+
+  } 
 
   public function registrar_cliente(array $dataArray){
 
@@ -146,10 +121,8 @@
     $sql = 'INSERT INTO CLIENTE ('. $this->fields_query($dataArray) .') VALUES ('. $this->values_query($dataArray) .')';
 
     $response_query = $this->set_query($sql);
-      
-      print_r($response_query);
 
-      exit();
+
       if ($response_query) {
           return $this->response_json(200, $response_query, "consulta exitosa");
       }else{
@@ -158,11 +131,9 @@
 
   }  
 
-
-
   protected function no_response(){
 
-      $this->response_json(-200, false, "no es una peticion valida");
+      $this->response_json(-200, NULL, "no es una peticion valida");
   }
 
   protected function response_json($status, $response, $mensaje) {

@@ -38,40 +38,6 @@ INSERT INTO `autorizacion` VALUES ('1', '1', '1', '1');
 INSERT INTO `autorizacion` VALUES ('2', '1', '2', '1');
 INSERT INTO `autorizacion` VALUES ('3', '1', '3', '1');
 INSERT INTO `autorizacion` VALUES ('4', '1', '4', '1');
-INSERT INTO `autorizacion` VALUES ('5', '1', '5', '1');
-INSERT INTO `autorizacion` VALUES ('6', '1', '6', '1');
-INSERT INTO `autorizacion` VALUES ('7', '1', '7', '1');
-INSERT INTO `autorizacion` VALUES ('8', '1', '8', '1');
-INSERT INTO `autorizacion` VALUES ('9', '1', '9', '1');
-INSERT INTO `autorizacion` VALUES ('10', '1', '10', '1');
-INSERT INTO `autorizacion` VALUES ('11', '1', '11', '1');
-INSERT INTO `autorizacion` VALUES ('12', '1', '12', '1');
-INSERT INTO `autorizacion` VALUES ('13', '1', '13', '1');
-INSERT INTO `autorizacion` VALUES ('14', '1', '14', '1');
-INSERT INTO `autorizacion` VALUES ('15', '1', '15', '1');
-
--- ----------------------------
--- Table structure for cliente
--- ----------------------------
-DROP TABLE IF EXISTS `cliente`;
-CREATE TABLE `cliente` (
-  `id_cliente` int(10) NOT NULL AUTO_INCREMENT,
-  `nombre_cliente` varchar(25) COLLATE utf8_spanish_ci NOT NULL,
-  `apellido_cliente` varchar(25) COLLATE utf8_spanish_ci DEFAULT NULL,
-  `pre_doc_cliente` varchar(1) COLLATE utf8_spanish_ci NOT NULL,
-  `doc_cliente` varchar(11) COLLATE utf8_spanish_ci NOT NULL,
-  `rason_social_cliente` varchar(50) COLLATE utf8_spanish_ci DEFAULT NULL,
-  `direccion_cliente` varchar(50) COLLATE utf8_spanish_ci DEFAULT NULL,
-  `telf_cliente` varchar(11) COLLATE utf8_spanish_ci DEFAULT NULL,
-  `otro_telf_cliente` varchar(11) COLLATE utf8_spanish_ci DEFAULT NULL,
-  `email_cliente` varchar(50) COLLATE utf8_spanish_ci DEFAULT NULL,
-  `tipo_cliente` varchar(10) COLLATE utf8_spanish_ci NOT NULL,
-  PRIMARY KEY (`id_cliente`,`tipo_cliente`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
-
--- ----------------------------
--- Records of cliente
--- ----------------------------
 
 -- ----------------------------
 -- Table structure for modulo
@@ -93,17 +59,6 @@ INSERT INTO `modulo` VALUES ('1', '0', 'operaciones', '1');
 INSERT INTO `modulo` VALUES ('2', '0', 'clientes', '1');
 INSERT INTO `modulo` VALUES ('3', '0', 'proveedores', '1');
 INSERT INTO `modulo` VALUES ('4', '0', 'productos', '1');
-INSERT INTO `modulo` VALUES ('5', '1', 'compra', '1');
-INSERT INTO `modulo` VALUES ('6', '1', 'ventas', '1');
-INSERT INTO `modulo` VALUES ('7', '1', 'movimientos', '1');
-INSERT INTO `modulo` VALUES ('8', '4', 'en proceso', '1');
-INSERT INTO `modulo` VALUES ('9', '4', 'listos', '1');
-INSERT INTO `modulo` VALUES ('10', '2', 'reportes', '1');
-INSERT INTO `modulo` VALUES ('11', '3', 'pagos', '1');
-INSERT INTO `modulo` VALUES ('12', '0', 'usuarios', '1');
-INSERT INTO `modulo` VALUES ('13', '12', 'nuevo', '1');
-INSERT INTO `modulo` VALUES ('14', '12', 'historial', '1');
-INSERT INTO `modulo` VALUES ('15', '2', 'registro', '1');
 
 -- ----------------------------
 -- Table structure for perfil
@@ -128,7 +83,7 @@ INSERT INTO `perfil` VALUES ('2', 'usuario', '1');
 DROP TABLE IF EXISTS `usuario`;
 CREATE TABLE `usuario` (
   `id_user` int(11) NOT NULL AUTO_INCREMENT,
-  `user_name` varchar(20) NOT NULL,
+  `usuario` varchar(20) NOT NULL,
   `f_name` varchar(20) NOT NULL,
   `l_name` varchar(20) NOT NULL,
   `email` varchar(35) NOT NULL,
@@ -136,7 +91,7 @@ CREATE TABLE `usuario` (
   `status` tinyint(20) NOT NULL,
   `id_perfil_fk` int(20) NOT NULL,
   PRIMARY KEY (`id_user`),
-  UNIQUE KEY `user_name` (`user_name`),
+  UNIQUE KEY `usuario` (`usuario`),
   KEY `FK_id_perfil` (`id_perfil_fk`),
   CONSTRAINT `FK_id_perfil` FOREIGN KEY (`id_perfil_fk`) REFERENCES `perfil` (`id_perfil`)
 ) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
@@ -144,5 +99,5 @@ CREATE TABLE `usuario` (
 -- ----------------------------
 -- Records of usuario
 -- ----------------------------
-INSERT INTO `usuario` VALUES ('2', 'dnolasco', 'daniel', 'nolasco', 'dnolasco@gmail.com', '123', '1', '1');
-INSERT INTO `usuario` VALUES ('3', 'rpaniagua', 'robert', 'paniagua', 'rpaniagua@gmail.com', '1234', '1', '2');
+INSERT INTO `usuario` VALUES ('2', 'moya', 'daniel', 'nolasco', 'dnolasco@gmail.com', '123+', '1', '1');
+INSERT INTO `usuario` VALUES ('3', 'crojas', 'carlos', 'rojas', 'crojas@gmail.com', '1234', '1', '2');

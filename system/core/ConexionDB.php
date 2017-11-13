@@ -69,30 +69,6 @@
 
     }
 
-    /**
-     * obtiene un array de resultados
-     * Solo se usara para las consultas de tipo SELECT
-     * @param string $sql query tipo select
-     * @return Array con los registros obtenidos de la base de datos
-     */
-    function execute_query_login($dataArray, $sql = '') {
-
-      extract($dataArray);
-
-      $stmt = $this->conn->prepare($sql);
-
-      $stmt->bind_param("ss" , $user_name, $password);
-
-      $stmt->execute();
-
-      $result = $stmt->get_result();
-      $response_query = $result->fetch_all(MYSQLI_ASSOC);
-
-      $stmt->close();
-
-      return $response_query;
-
-    }
 
     function get_query($sql) {
 
