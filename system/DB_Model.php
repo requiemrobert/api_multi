@@ -102,7 +102,6 @@
 
   public function registro_pieza(array $dataArray){
 
-    
     $sql = 'INSERT INTO pieza ('. $this->fields_query($dataArray) .') VALUES ('. $this->values_query($dataArray) .')';
 
     $response_query = $this->set_query($sql);
@@ -111,6 +110,23 @@
           return $this->response_json(200, $response_query, "registro exitoso");
       }else{
           return $this->response_json(-200, $response_query, "no se pudo realizar el registro");
+      }
+
+  } 
+
+  public function consultar_piezas(){
+
+    $sql  = 'SELECT pieza.tipo_pieza, COUNT(pieza.tipo_pieza) AS cantidad, pieza.fabricante, pieza.fec_produccion FROM `pieza`';
+   // $sql .= ' WHERE pieza.fec_produccion  BETWEEN CAST("2017-10-01" AS DATE) AND CAST("2017-10-31" AS DATE)';
+    $sql .= ' GROUP BY MONTH(CAST(pieza.fec_produccion AS DATE)), pieza.tipo_pieza';  
+    $sql .= ' ORDER BY pieza.fec_produccion';
+    
+    $response_query = $this->get_query($sql);
+
+      if ($response_query) {
+          return $this->response_json(200, $response_query, "consulta exitosa");
+      }else{
+          return $this->response_json(-200, $response_query, "no se pudo realizar la consulta");
       }
 
   } 

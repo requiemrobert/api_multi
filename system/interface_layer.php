@@ -40,6 +40,12 @@ class InterfaceLayer extends DB_Model
 		            
 		      break;
 
+		      case 'consultar_piezas':
+
+		        echo $this->consultar_piezas();
+		            
+		      break;
+
 		      case 'ping':
 
 		        echo $this->ping($dataArray['data']);
