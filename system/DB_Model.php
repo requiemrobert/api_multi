@@ -114,22 +114,6 @@
 
   } 
 
-  public function consultar_piezas(){
-
-    $sql  = 'SELECT pieza.tipo_pieza, COUNT(pieza.tipo_pieza) AS cantidad, pieza.fabricante, pieza.fec_produccion FROM `pieza`';
-    $sql .= ' GROUP BY MONTH(CAST(pieza.fec_produccion AS DATE)), pieza.tipo_pieza';  
-    $sql .= ' ORDER BY pieza.fec_produccion';
-    
-    $response_query = $this->get_query($sql);
-
-      if ($response_query) {
-          return $this->response_json(200, $response_query, "consulta exitosa");
-      }else{
-          return $this->response_json(-200, $response_query, "no se pudo realizar la consulta");
-      }
-
-  } 
-
   public function registrar_Cliente(array $dataArray){
 
     $sql = 'INSERT INTO CLIENTE ('. $this->fields_query($dataArray) .') VALUES ('. $this->values_query($dataArray) .')';
@@ -250,6 +234,40 @@
       }else{
           return $this->response_json(-200, NULL, "No se pudo registrar");
       }
+
+  } 
+
+  public function indicadores_piezas_mes(){
+
+    $sql  = " SELECT ";
+    $sql .= " pedidos.tipo_pieza,";
+    $sql .= " COUNT(pedidos.tipo_pieza) AS cantidad,";
+    $sql .= " pedidos.marca_fabricante,";
+    $sql .= " pedidos.fecha_pedido,";
+    $sql .= " MONTH(pedidos.fecha_pedido) AS mes_pedido,";
+    $sql .= " pedidos.estatus,";
+    $sql .= " pedidos.fec_estatus";
+    $sql .= " FROM pedidos";
+    $sql .= " INNER JOIN pieza ON pedidos.numero_orden = pieza.numero_orden_fk AND pedidos.cod_pieza = pieza.cod_pieza";
+    $sql .= " GROUP BY MONTH(CAST(pedidos.fecha_pedido AS DATE)),pedidos.tipo_pieza";
+    $sql .= " ORDER BY pedidos.fecha_pedido";
+
+    return json_encode( ['data' => $this->get_query($sql)] );
+
+  } 
+
+  public function total_pedidos_piezas(){
+
+    $sql  = " SELECT";
+    $sql .= " pedidos.tipo_pieza,";
+    $sql .= " COUNT(pedidos.tipo_pieza) AS cantidad,";
+    $sql .= " pedidos.marca_fabricante";
+    $sql .= " FROM pedidos";
+    $sql .= " INNER JOIN pieza ON pedidos.numero_orden = pieza.numero_orden_fk AND pedidos.cod_pieza = pieza.cod_pieza";
+    $sql .= " GROUP BY pedidos.tipo_pieza";
+    $sql .= " ORDER BY pedidos.fecha_pedido";
+
+    return json_encode( ['data' => $this->get_query($sql)] );
 
   } 
 

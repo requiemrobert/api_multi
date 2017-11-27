@@ -76,6 +76,18 @@ class InterfaceLayer extends DB_Model
 		            
 		      break;
 
+		      case 'indicadores_piezas_mes':
+
+		        echo $this->indicadores_piezas_mes();
+		            
+		      break;
+
+		      case 'total_pedidos_piezas':
+
+		        echo $this->total_pedidos_piezas();
+		            
+		      break;
+
 		      case 'ping':
 
 		        echo $this->ping($dataArray['data']);
