@@ -34,15 +34,45 @@ class InterfaceLayer extends DB_Model
 		            
 		      break;
 
-		      case 'registrar_cliente':
+		      case 'registrar_Cliente':
 
-		        echo $this->registrar_cliente($dataArray['data']);
+		        echo $this->registrar_Cliente($dataArray['data']);
+		            
+		      break;
+
+		      case 'listar_Clientes':
+
+		        echo $this->listar_Clientes();
+		            
+		      break;
+
+		      case 'buscar_Cliente':
+
+		        echo $this->buscar_Cliente($dataArray['data']);
+		            
+		      break;
+
+		      case 'registrar_pedido':
+
+		        echo $this->registrar_pedido($dataArray['data']);
+		            
+		      break;
+
+		      case 'consultar_pedidos':
+
+		        echo $this->consultar_pedidos();
 		            
 		      break;
 
 		      case 'consultar_piezas':
 
 		        echo $this->consultar_piezas();
+		            
+		      break;
+
+		      case 'actualizar_estatus_pieza':
+
+		        echo $this->actualizar_estatus_pieza($dataArray['data']);
 		            
 		      break;
 

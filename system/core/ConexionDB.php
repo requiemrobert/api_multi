@@ -98,6 +98,17 @@
 
     }
 
+    // Obtener ultimo Registro secuencia
+    function set_query_secuence(string $sql) {
+      // Lee la cadena SQL recibida y ejecuta la consulta
+      $result = $this->conn->query($sql);
+      
+      // Retorna el resultado
+      return mysqli_insert_id($this->conn);
+
+    }
+
+
     // La función destructora cierra la conexión previamente abierta en el constructor
     function __destruct() {
 
